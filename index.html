@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zama Confidentiality Quiz</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Font for a futuristic feel */
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #1a1a1a; /* Darker black/gray background */
+        }
+
+        /* Neon-like border effect for the main card */
+        .neon-border {
+            border: 2px solid transparent;
+            border-radius: 1.5rem;
+            background: linear-gradient(#262626, #262626) padding-box, /* Dark background for card interior */
+                        linear-gradient(45deg, #fbbf24, #facc15) border-box; /* Yellow/Amber gradient border */
+            box-shadow: 0 0 15px rgba(250, 202, 21, 0.6); /* Yellow glow */
+            transition: all 0.3s ease;
+        }
+
+        .neon-button {
+            border: 1px solid #d97706; /* Darker Amber border */
+            background-color: #3f3f46; /* Gray 700 dark background */
+            color: #fef3c7; /* Light yellow text */
+            transition: all 0.2s ease;
+        }
+
+        .neon-button:hover {
+            border-color: #facc15; /* Bright yellow border */
+            background-color: #451a03; /* Amber 950/Dark Orange */
+            box-shadow: 0 0 10px #facc15; /* Yellow glow */
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Keep Correct/Incorrect standard for clarity */
+        .neon-button.correct {
+            background-color: #065f46; /* Green 800 */
+            border-color: #34d399;
+            box-shadow: 0 0 10px #34d399;
+        }
+
+        .neon-button.incorrect {
+            background-color: #991b1b; /* Red 800 */
+            border-color: #f87171;
+            box-shadow: 0 0 10px #f87171;
+        }
+
+        .neon-pulse {
+            animation: pulse-glow 1.5s infinite alternate;
+        }
+        
+        @keyframes pulse-glow {
+            from { box-shadow: 0 0 5px #fbbf24; } /* Lighter Amber pulse start */
+            to { box-shadow: 0 0 15px #facc15, 0 0 10px #fcd34d; } /* Yellow glow end */
+        }
+    </style>
+</head>
+<body class="bg-gray-950 text-white p-4">
+
+    <div id="quiz-container" class="w-full max-w-2xl mx-auto p-6 md:p-10 neon-border bg-gray-900 shadow-2xl">
+        <h1 class="text-4xl font-bold mb-6 text-center text-yellow-400">Zama FHEVM Confidentiality Quiz</h1>
+        <p class="text-center text-amber-300 mb-8">Test your knowledge on Fully Homomorphic Encryption (FHE) and Zama's FHEVM!</p>
+
+        <!-- Quiz Content Area -->
+        <div id="quiz-content">
+            <!-- Content will be rendered here by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // The 20 Quiz Questions based on Zama, FHE, and FHEVM
+        const quizData = [
+            {
+                question: "1. What is the primary technology Zama is leveraging to enable confidential smart contracts on EVM chains?",
+                options: ["Zero-Knowledge Proofs (ZKPs)", "Multi-Party Computation (MPC)", "Fully Homomorphic Encryption (FHE)", "Secure Enclaves (e.g., SGX)"],
+                answer: "Fully Homomorphic Encryption (FHE)"
+            },
+            {
+                question: "2. What does FHEVM stand for in the context of Zama?",
+                options: ["Fast Homomorphic Encryption Virtual Machine", "Fully Homomorphic Encrypted Verification Module", "Fully Homomorphic Encryption-enabled EVM", "Federated Homomorphic Encryption Validator Machine"],
+                answer: "Fully Homomorphic Encryption-enabled EVM"
+            },
+            {
+                question: "3. What is the main benefit that Zama's FHEVM aims to bring to blockchain transactions and smart contracts?",
+                options: ["Increased transaction speed", "Reduced gas fees", "Confidentiality and privacy for on-chain computations", "Enhanced scalability through sharding"],
+                answer: "Confidentiality and privacy for on-chain computations"
+            },
+            {
+                question: "4. According to Zama, what kind of data can be processed on-chain using FHEVM without revealing its content?",
+                options: ["Only public data", "Only encrypted data", "Only data hashed by a specific algorithm", "Only data processed off-chain"],
+                answer: "Only encrypted data"
+            },
+            {
+                question: "5. Which existing blockchain virtual machine is Zama's FHEVM designed to be compatible with?",
+                options: ["Solana Virtual Machine (SVM)", "WebAssembly (Wasm)", "Ethereum Virtual Machine (EVM)", "Cosmos SDK"],
+                answer: "Ethereum Virtual Machine (EVM)"
+            },
+            {
+                question: "6. What is a key challenge that FHEVM aims to solve for decentralized applications (dApps)?",
+                options: ["Lack of cross-chain interoperability", "Inability to handle large data sets", "Exposure of sensitive user or transaction data on public ledgers", "Difficulty in creating complex smart contract logic"],
+                answer: "Exposure of sensitive user or transaction data on public ledgers"
+            },
+            {
+                question: "7. In FHE, what happens to data during computation?",
+                options: ["It is decrypted, processed, and then re-encrypted.", "It remains encrypted throughout the computation.", "It is partially decrypted, processed, and re-encrypted.", "It is sent to a trusted third party for processing."],
+                answer: "It remains encrypted throughout the computation."
+            },
+            {
+                question: "8. What does 'Homomorphic' in FHE refer to?",
+                options: [
+                    "The ability to encrypt data quickly.",
+                    "The property that a computation on encrypted data yields an encrypted result which, when decrypted, matches the result of the same computation on the plaintext data.",
+                    "The process of converting plaintext into ciphertext.",
+                    "The method of validating encrypted transactions."
+                ],
+                answer: "The property that a computation on encrypted data yields an encrypted result which, when decrypted, matches the result of the same computation on the plaintext data."
+            },
+            {
+                question: "9. What type of smart contracts does Zama's FHEVM primarily enable?",
+                options: ["Public and transparent smart contracts", "Confidential smart contracts", "Off-chain smart contracts", "Delegated smart contracts"],
+                answer: "Confidential smart contracts"
+            },
+            {
+                question: "10. What kind of use case is often cited as a prime example for FHEVM's capabilities in DeFi?",
+                options: ["Transparent public fundraising", "Private trading strategies and confidential loan terms", "Open-source protocol development", "High-frequency trading without privacy concerns"],
+                answer: "Private trading strategies and confidential loan terms"
+            },
+            {
+                question: "11. Where can developers find detailed technical information about Zama's FHEVM?",
+                options: ["On their LinkedIn page", "In their marketing brochures", "In the FHEVM whitepaper on GitHub", "Through a private access portal"],
+                answer: "In the FHEVM whitepaper on GitHub"
+            },
+            {
+                question: "12. What is a key characteristic of the FHEVM in terms of privacy?",
+                options: ["It makes all data publicly visible after processing.", "It allows computations on private data without revealing the data to the blockchain or nodes.", "It only encrypts transaction amounts, not the participants.", "It uses trusted execution environments to secure data."],
+                answer: "It allows computations on private data without revealing the data to the blockchain or nodes."
+            },
+            {
+                question: "13. Which concept is most closely related to the FHEVM's ability to operate on encrypted data?",
+                options: ["Deterministic execution", "Atomic swaps", "Programmable privacy", "Off-chain scaling"],
+                answer: "Programmable privacy"
+            },
+            {
+                question: "14. What problem does Zama address that traditional public blockchains face regarding sensitive information?",
+                options: ["Slow transaction finality", "Lack of consensus mechanisms", "All data being publicly visible and auditable", "High energy consumption"],
+                answer: "All data being publicly visible and auditable"
+            },
+            {
+                question: "15. If a smart contract on FHEVM processes encrypted inputs, what kind of output would be expected?",
+                options: ["A decrypted plaintext output.", "An encrypted output.", "A hash of the output.", "A public record of the plaintext input."],
+                answer: "An encrypted output."
+            },
+            {
+                question: "16. The Zama Protocol Litepaper provides an overview of what?",
+                options: ["Zama's company history", "A high-level architectural overview of how FHE transforms the EVM", "Detailed cryptography specific implementations", "Marketing strategies for FHEVM adoption"],
+                answer: "A high-level architectural overview of how FHE transforms the EVM"
+            },
+            {
+                question: "17. What is one of the main goals of Zama in the broader Web3 ecosystem?",
+                options: ["To create a new blockchain from scratch.", "To enable true data privacy and confidentiality for Web3 applications.", "To replace all existing layer 2 solutions.", "To solely focus on enterprise blockchain solutions."],
+                answer: "To enable true data privacy and confidentiality for Web3 applications."
+            },
+            {
+                question: "18. What does Zama's approach with FHEVM allow developers to do that was previously difficult or impossible on public EVM chains with sensitive data?",
+                options: ["Deploy smart contracts faster.", "Perform computations on encrypted data directly on-chain.", "Reduce the cost of deploying tokens.", "Build complex user interfaces."],
+                answer: "Perform computations on encrypted data directly on-chain."
+            },
+            {
+                question: "19. What is the fundamental difference between FHE and traditional encryption when it comes to computation?",
+                options: ["Traditional encryption is faster.", "FHE allows computation on ciphertext without decryption, while traditional encryption requires decryption for computation.", "Traditional encryption provides stronger security.", "FHE is only used for very small data sets."],
+                answer: "FHE allows computation on ciphertext without decryption, while traditional encryption requires decryption for computation."
+            },
+            {
+                question: "20. What kind of applications are expected to benefit significantly from Zama's FHEVM?",
+                options: ["Applications that require complete transparency of all data.", "Gaming applications that don't handle sensitive user data.", "dApps where user privacy and confidential data processing are critical.", "Simple token transfer mechanisms without complex logic."],
+                answer: "dApps where user privacy and confidential data processing are critical."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = [];
+        const quizContent = document.getElementById('quiz-content');
+
+        /**
+         * Shuffles an array in place using the Fisher-Yates algorithm.
+         * @param {Array} array 
+         */
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        /**
+         * Renders the current question and options.
+         */
+        function renderQuestion() {
+            const q = quizData[currentQuestionIndex];
+            const totalQuestions = quizData.length;
+
+            if (!q) {
+                showResult();
+                return;
+            }
+
+            // Shuffle options for engagement
+            const shuffledOptions = [...q.options];
+            shuffleArray(shuffledOptions);
+
+            quizContent.innerHTML = `
+                <div class="mb-8 p-4 bg-gray-800 rounded-lg shadow-lg neon-pulse">
+                    <p class="text-lg font-semibold text-amber-400 mb-2">Question ${currentQuestionIndex + 1} of ${totalQuestions}</p>
+                    <p class="text-2xl font-bold text-white">${q.question}</p>
+                </div>
+                
+                <div id="options-container" class="space-y-4">
+                    ${shuffledOptions.map((option, index) => `
+                        <button 
+                            onclick="handleAnswer('${option.replace(/'/g, "\\'")}')" 
+                            class="neon-button w-full p-4 rounded-xl text-left text-lg font-medium shadow-md transition-all duration-200 ease-in-out"
+                        >
+                            ${String.fromCharCode(65 + index)}. ${option}
+                        </button>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        /**
+         * Handles the user's answer selection.
+         * @param {string} selectedOption 
+         */
+        function handleAnswer(selectedOption) {
+            const currentQ = quizData[currentQuestionIndex];
+            const isCorrect = selectedOption === currentQ.answer;
+
+            // Record the answer
+            userAnswers.push({
+                question: currentQ.question,
+                selected: selectedOption,
+                correct: currentQ.answer,
+                isCorrect: isCorrect
+            });
+
+            if (isCorrect) {
+                score++;
+            }
+
+            // Highlight the selection for a brief moment before moving on
+            const optionsContainer = document.getElementById('options-container');
+            const buttons = optionsContainer.querySelectorAll('button');
+            buttons.forEach(button => {
+                // Disable all buttons to prevent double-clicking
+                button.disabled = true;
+                
+                // Remove the general hover effect
+                button.classList.remove('neon-button', 'hover:bg-indigo-800', 'hover:shadow-lg', 'transition-all');
+
+                if (button.innerText.includes(selectedOption)) {
+                    button.classList.add(isCorrect ? 'correct' : 'incorrect');
+                }
+                
+                // Visually show the correct answer if the user was wrong
+                if (!isCorrect && button.innerText.includes(currentQ.answer)) {
+                    button.classList.add('correct');
+                    button.style.opacity = '0.7'; // Make the correct one slightly transparent if user was wrong
+                }
+            });
+
+            // Move to the next question after a delay
+            setTimeout(() => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < quizData.length) {
+                    renderQuestion();
+                } else {
+                    showResult();
+                }
+            }, 1200);
+        }
+
+        /**
+         * Displays the final quiz results and review.
+         */
+        function showResult() {
+            const percentage = ((score / quizData.length) * 100).toFixed(0);
+            const passed = score >= quizData.length * 0.75; // 75% threshold
+
+            quizContent.innerHTML = `
+                <div class="text-center">
+                    <h2 class="text-5xl font-extrabold mb-4 text-yellow-400">${passed ? 'Confidentiality Expert!' : 'Needs More FHE'}</h2>
+                    <p class="text-3xl font-bold text-white mb-6">You scored ${score} out of ${quizData.length}</p>
+                    <div class="mb-10 p-6 inline-block rounded-full neon-border neon-pulse bg-gray-800">
+                        <span class="text-5xl font-black ${passed ? 'text-green-400' : 'text-red-400'}">${percentage}%</span>
+                    </div>
+
+                    <button 
+                        onclick="startQuiz(true)" 
+                        class="neon-button w-full md:w-1/2 p-4 rounded-xl text-xl font-bold mb-10 mx-auto block"
+                    >
+                        Retake Quiz
+                    </button>
+
+                    <h3 class="text-2xl font-bold text-amber-400 mb-6 border-b border-amber-500 pb-2">Answer Review</h3>
+                </div>
+                
+                <div class="space-y-6 max-h-96 overflow-y-auto pr-2">
+                    ${userAnswers.map((item, index) => {
+                        // Remove the leading "X. " from the question text
+                        const cleanedQuestion = item.question.replace(/^\d+\.\s*/, '');
+                        return `
+                        <div class="p-4 rounded-lg shadow-xl ${item.isCorrect ? 'bg-green-900/40' : 'bg-red-900/40'}">
+                            <p class="text-xl font-bold mb-2 ${item.isCorrect ? 'text-green-300' : 'text-red-300'}">Q${index + 1}: ${cleanedQuestion}</p>
+                            <p class="text-md text-gray-300">Your Answer: <span class="font-semibold">${item.selected}</span></p>
+                            ${!item.isCorrect ? `<p class="text-md text-yellow-400">Correct Answer: <span class="font-semibold">${item.correct}</span></p>` : ''}
+                        </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        /**
+         * Initializes the quiz state.
+         * @param {boolean} reset - If true, resets scores.
+         */
+        function startQuiz(reset = false) {
+            if (reset || currentQuestionIndex === 0) {
+                currentQuestionIndex = 0;
+                score = 0;
+                userAnswers = [];
+                // Optionally shuffle quizData on a fresh start
+                // shuffleArray(quizData); 
+            }
+            renderQuestion();
+        }
+
+        // Initialize the quiz when the page loads
+        window.onload = startQuiz;
+    </script>
+</body>
+</html>
